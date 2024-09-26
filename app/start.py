@@ -1,4 +1,3 @@
-# start.py
 # app/start.py
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
@@ -18,8 +17,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Ruta para "/"
+@app.get("/")
+async def read_root():
+    return {"message": "¡Bienvenido a Reciclapp!"}
+
+# Incluye tu api_router
 app.include_router(api_router)
 
+# Middleware y eventos adicionales
 @app.middleware("http")
 async def add_process_time_header(request, call_next):
     start_time = time.time()
@@ -27,14 +33,3 @@ async def add_process_time_header(request, call_next):
     process_time = time.time() - start_time
     response.headers["X-Process-Time"] = f"{process_time:0.4f} sec"
     return response
-
-# Opcional: Eventos de inicio y apagado
-@app.on_event("startup")
-async def startup_event():
-    # Código que deseas ejecutar al iniciar la aplicación
-    pass
-
-@app.on_event("shutdown")
-async def shutdown_event():
-    # Código que deseas ejecutar al cerrar la aplicación
-    pass
