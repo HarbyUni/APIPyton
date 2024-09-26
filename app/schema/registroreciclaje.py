@@ -8,7 +8,7 @@ class RegistroReciclajeSchema(BaseModel):
     id_usuario: str = Field(..., description="ID del usuario que registró el reciclaje")
     id_material: str = Field(..., description="ID del material reciclado")
     cantidad: float = Field(..., description="Cantidad reciclada")
-    fecha: datetime = Field(..., description="Fecha del reciclaje", default_factory=datetime.now)
+    fecha: datetime = Field(default_factory=datetime.now, description="Fecha del reciclaje")
     puntos: Optional[int] = Field(None, description="Puntos obtenidos por el reciclaje")
 
     class Config:
@@ -18,7 +18,7 @@ class CreateRegistroReciclajeSchema(BaseModel):
     id_usuario: str = Field(..., description="ID del usuario que registró el reciclaje")
     id_material: str = Field(..., description="ID del material reciclado")
     cantidad: float = Field(..., description="Cantidad reciclada")
-    fecha: datetime = Field(..., description="Fecha del reciclaje", default_factory=datetime.now)
+    fecha: datetime = Field( default_factory=datetime.now,description="Fecha del reciclaje")
     puntos: Optional[int] = Field(None, description="Puntos obtenidos por el reciclaje")
 
 
