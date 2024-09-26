@@ -1,7 +1,7 @@
 # main.py
 from loguru import logger
 import sys
-from app.start import run
+from app.start import app
 
 
 def run_server():
