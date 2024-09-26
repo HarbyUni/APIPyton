@@ -1,10 +1,11 @@
 fastapi==0.95.2
 starlette==0.27.0
 uvicorn==0.23.2
-motor==2.5.1  # Versión anterior de motor
-pymongo==3.12.3  # Versión compatible con motor 2.5.1
+motor==3.1.2
 loguru==0.7.0
 python-dotenv==1.0.0
 pydantic==1.10.12
+pymongo>=4.9.1
+
 
 
