@@ -1,7 +1,9 @@
 fastapi==0.95.2
-starlette==0.27.0  # Cambiado a una versión compatible
+starlette==0.27.0
 uvicorn==0.23.2
 motor==3.1.2
 loguru==0.7.0
 python-dotenv==1.0.0
 pydantic==1.10.12
+pymongo>=4.10.0
+
