@@ -7,7 +7,7 @@ from app.schema.base import BodySchema, ResponseSchema
 
 class PerfilUsuarioSchema(BaseModel):
     id_perfil: str = Field(..., description="ID único del perfil de usuario")
-    id_usuario: str = Field(..., description="ID del usuario asociado")
+    id: str = Field(..., description="ID del usuario asociado")
     nombre_usuario: str = Field(..., description="Nombre de usuario")
     foto: Optional[str] = Field(None, description="URL de la foto del usuario")
     codigo_qr: Optional[str] = Field(None, description="Código QR del usuario")
@@ -18,7 +18,7 @@ class PerfilUsuarioSchema(BaseModel):
     
 
 class CreatePerfilUsuarioSchema(BaseModel):
-    id_usuario: str = Field(..., description="ID del usuario asociado")
+    id: str = Field(..., description="ID del usuario asociado")
     nombre_usuario: str = Field(..., description="Nombre de usuario", max_length=50)
     foto: Optional[str] = Field(None, description="URL de la foto del usuario")
     codigo_qr: Optional[str] = Field(None, description="Código QR del usuario")

@@ -1,6 +1,18 @@
 from fastapi import APIRouter, Body
-from app.schema.usuarios import UsuarioSchema, CreateUsuarioSchema, FetchUsuariosSchema, FetchUsuariosResponse, UsuarioResponse
-from app.controller.usuarios import fetch_all_usuarios, fetch_usuario_by_id, create_usuario, update_usuario
+from loguru import logger  # Importación correcta
+from app.schema.usuarios import (
+    UsuarioSchema,
+    CreateUsuarioSchema,
+    FetchUsuariosSchema,
+    FetchUsuariosResponse,
+    UsuarioResponse,
+)
+from app.controller.usuarios import (
+    fetch_all_usuarios,
+    fetch_usuario_by_id,
+    create_usuario,
+    update_usuario,
+)
 from app.common.utils import transform_mongo_document
 from app.schema.base import build_response
 
@@ -9,17 +21,26 @@ router = APIRouter(
     tags=["usuario"]
 )
 
-@router.get(path="/all",
-            description="Fetch all usuarios",
-            response_model=FetchUsuariosResponse)
+@router.get(
+    path="/all",
+    description="Fetch all usuarios",
+    response_model=FetchUsuariosResponse
+)
 async def fetch_usuarios():
     try:
         usuarios = await fetch_all_usuarios()
-        usuario_schemas = [UsuarioSchema(**transform_mongo_document(usuario)) for usuario in usuarios]
-        fetch_usuarios_schema = FetchUsuariosSchema(usuarios=usuario_schemas, total=len(usuario_schemas))
+        usuario_schemas = [
+            UsuarioSchema(**transform_mongo_document(usuario))
+            for usuario in usuarios
+        ]
+        fetch_usuarios_schema = FetchUsuariosSchema(
+            usuarios=usuario_schemas,
+            total=len(usuario_schemas)
+        )
         return build_response(success=True, data=fetch_usuarios_schema, status_code=200)
-    except Exception:
-        return build_response(success=False, error="An error occurred while fetching usuarios", status_code=500)
+    except Exception as e:
+        logger.exception("An error occurred while fetching usuarios")
+        return build_response(success=False, error=str(e), status_code=500)
 
 @router.get(path="/{usuario_id}",
             description="Get a usuario by id",
@@ -39,15 +60,17 @@ async def get_usuario(usuario_id: str):
              response_model=UsuarioResponse)
 async def new_usuario(usuario: CreateUsuarioSchema = Body(...)):
     try:
-        usuario_dict = usuario.model_dump()
+        usuario_dict = usuario.dict()  # Usar dict() si estás en Pydantic 1.x
         _id = await create_usuario(usuario_dict)
         if _id:
-            usuario_dict["_id"] = _id
-
+            usuario_dict["id"] = str(_id)
+    
         usuario_schema = UsuarioSchema(**transform_mongo_document(usuario_dict))
         return build_response(success=True, data=usuario_schema, status_code=200)
-    except Exception:
-        return build_response(success=False, error="An error occurred while creating a new usuario", status_code=500)
+    except Exception as e:
+        logger.exception("An error occurred while creating a new usuario")
+        return build_response(success=False, error=str(e), status_code=500)
+
 
 @router.put(path="/update",
             description="Update a usuario",
@@ -65,3 +88,5 @@ async def update_usuario(usuario: UsuarioSchema = Body(...)):
         return build_response(success=True, data=usuario_schema, status_code=200)
     except Exception:
         return build_response(success=False, error="An error occurred while updating a usuario", status_code=500)
+
+

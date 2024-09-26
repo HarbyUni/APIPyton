@@ -5,7 +5,7 @@ from typing import Optional
 
 class SolicitudRecoleccionSchema(BaseModel):
     id_solicitud: str = Field(..., description="ID único de la solicitud de recolección")
-    id_usuario: str = Field(..., description="ID del usuario que realiza la solicitud")
+    id: str = Field(..., description="ID del usuario que realiza la solicitud")
     fecha_recoleccion: Optional[datetime] = Field(None, description="Fecha solicitada para la recolección")
     direccion: str = Field(..., description="Dirección de recolección")
     codigo_qr: Optional[str] = Field(None, description="Código QR generado")

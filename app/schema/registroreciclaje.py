@@ -5,7 +5,7 @@ from typing import Optional, List
 
 class RegistroReciclajeSchema(BaseModel):
     id_registro: str = Field(..., description="ID único del registro de reciclaje")
-    id_usuario: str = Field(..., description="ID del usuario que registró el reciclaje")
+    id: str = Field(..., description="ID del usuario que registró el reciclaje")
     id_material: str = Field(..., description="ID del material reciclado")
     cantidad: float = Field(..., description="Cantidad reciclada")
     fecha: datetime = Field(default_factory=datetime.now, description="Fecha del reciclaje")
@@ -15,7 +15,7 @@ class RegistroReciclajeSchema(BaseModel):
         orm_mode = True
 
 class CreateRegistroReciclajeSchema(BaseModel):
-    id_usuario: str = Field(..., description="ID del usuario que registró el reciclaje")
+    id: str = Field(..., description="ID del usuario que registró el reciclaje")
     id_material: str = Field(..., description="ID del material reciclado")
     cantidad: float = Field(..., description="Cantidad reciclada")
     fecha: datetime = Field( default_factory=datetime.now,description="Fecha del reciclaje")

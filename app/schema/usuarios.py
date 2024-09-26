@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import List, Optional
 
 class UsuarioSchema(BaseModel):
-    id_usuario: str = Field(..., description="ID único del usuario")
+    id: str = Field(..., description="ID único del usuario")
     nombres: str = Field(..., description="Nombres del usuario", max_length=100)
     apellidos: str = Field(..., description="Apellidos del usuario", max_length=100)
     fecha_nacimiento: datetime = Field(..., description="Fecha de nacimiento del usuario")
@@ -22,6 +22,7 @@ class UsuarioSchema(BaseModel):
 
 
 class CreateUsuarioSchema(BaseModel):
+    id: Optional[str] = Field(None, description="ID único del usuario")
     nombres: str = Field(..., description="Nombres del usuario", max_length=100)
     apellidos: str = Field(..., description="Apellidos del usuario", max_length=100)
     fecha_nacimiento: datetime = Field(..., description="Fecha de nacimiento del usuario")
