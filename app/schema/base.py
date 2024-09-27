@@ -29,7 +29,7 @@ def build_response(success: bool,
 
     response = ResponseSchema(
         body=body
-    ).model_dump_json()
+    ).json()  # Cambiado a json()
 
     logger.info(response) if success else logger.error(response)
     return Response(content=response,
