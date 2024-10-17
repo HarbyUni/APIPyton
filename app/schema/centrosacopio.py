@@ -1,9 +1,8 @@
 from pydantic import BaseModel, Field
-from datetime import datetime
 from typing import Optional, List
 
 class CentroAcopiochema(BaseModel):
-    id_centro: str = Field(..., description="ID único del centro de reciclaje")
+    id: str = Field(None, description="ID único del centro de reciclaje")
     razon_social: str = Field(..., description="Razón social del centro de reciclaje")
     nit: str = Field(..., description="NIT del centro de reciclaje")
     logo: Optional[str] = Field(None, description="URL del logo del centro")
@@ -14,7 +13,7 @@ class CentroAcopiochema(BaseModel):
         orm_mode = True
 
 class CreateCentroAcopiochemaSchema(BaseModel):
-    id_centro: str = Field(..., description="ID único del centro de reciclaje")
+    id: Optional[str] = Field(None, description="ID único del centro de reciclaje")
     razon_social: str = Field(..., description="Razón social del centro de reciclaje")
     nit: str = Field(..., description="NIT del centro de reciclaje")
     logo: Optional[str] = Field(None, description="URL del logo del centro")

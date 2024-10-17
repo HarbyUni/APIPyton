@@ -8,7 +8,12 @@ class MongoDB:
     uri = "MONGODB_URI"
     db = "MONGODB_DB"
 
-
+class Google:
+    CLIENT_ID = 'GOOGLE_CLIENT_ID'
+    CLIENT_SECRET = 'GOOGLE_CLIENT_SECRET'
+    GOOGLE_REDIRECT_URI = 'GOOGLE_REDIRECT_URI'
 class Env:
     APP = App()
     MONGODB = MongoDB()
+    GOOGLE  = Google()
+

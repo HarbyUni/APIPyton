@@ -1,5 +1,6 @@
 from bson.objectid import ObjectId
 from app.common.db import db
+from app.security import hash_password  # Importa la función de hashing
 
 async def fetch_all_usuarios():
     usuarios = await db.usuarios.find().to_list(1000)
@@ -10,6 +11,8 @@ async def fetch_usuario_by_id(usuario_id: str):
     return usuario
 
 async def create_usuario(usuario_data: dict):
+    # Hashear la contraseña antes de guardarla en la base de datos
+    usuario_data['hashed_password'] = hash_password(usuario_data.pop('password'))
     result = await db.usuarios.insert_one(usuario_data)
     return result.inserted_id
 

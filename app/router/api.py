@@ -1,5 +1,4 @@
-from fastapi import APIRouter
-
+from fastapi import APIRouter, Depends, Request, HTTPException
 from app.router.product import router as product
 from app.router.usuarios import router as usuarios
 from app.router.perfil import router as perfil
@@ -13,10 +12,23 @@ api_router = APIRouter(
     responses={
         404: {"description": "Not found"},
         408: {"description": "Timeout"}
-        }
-    )
+    }
+)
 
-#api_router.include_router(product)
+# Dependencia que verifica si el usuario está autenticado
+async def get_current_user(request: Request):
+    user = request.session.get("user")
+    if not user:
+        raise HTTPException(status_code=401, detail="No autenticado")
+    return user
+
+# Ruta protegida, solo para usuarios autenticados
+@api_router.get("/protected")
+async def protected_route(user: dict = Depends(get_current_user)):
+    return {"message": f"¡Hola, {user['username']}! Estás autenticado."}
+
+# Incluye otros routers
+api_router.include_router(product)
 api_router.include_router(usuarios)
 api_router.include_router(perfil)
 api_router.include_router(material)

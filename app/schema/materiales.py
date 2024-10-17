@@ -4,7 +4,7 @@ from typing import List, Optional
 
 
 class MaterialSchema(BaseModel):
-    id_material: str = Field(..., description="ID único del material")
+    id: str = Field(..., description="ID único del material")
     nombre_material: str = Field(..., description="Nombre del material")
     unidad_medida: str = Field(..., description="Unidad de medida")
     descripcion: Optional[str] = Field(None, description="Descripción del material")
@@ -15,6 +15,7 @@ class MaterialSchema(BaseModel):
 
 
 class CreateMaterialSchema(BaseModel):
+    id: Optional[str] = Field(None, description="ID único del material")
     nombre_material: str = Field(..., description="Nombre del material")
     unidad_medida: str = Field(..., description="Unidad de medida")
     descripcion: Optional[str] = Field(None, description="Descripción del material")

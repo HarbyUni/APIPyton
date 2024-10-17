@@ -14,7 +14,7 @@ async def create_centro_acopio(centro_data: dict):
     return result.inserted_id
 
 async def update_centro_acopio(centro_data: dict):
-    _id = ObjectId(centro_data.pop("id_centro"))
+    _id = ObjectId(centro_data.pop("id"))
     result = await db.centros_acopio.update_one({"_id": _id}, {"$set": centro_data})
     return result.modified_count
 

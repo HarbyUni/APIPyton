@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Body
-from app.schema.centrosacopio import (CentroAcopiochema, CreateCentroAcopiochemaSchema, FetchCentroAcopiochemaResponse, CentroAcopiochemaResponse)
+from app.schema.centrosacopio import (CentroAcopiochema, CreateCentroAcopiochemaSchema, FetchCentroAcopiochemaResponse, CentroAcopiochemaResponse, FetchCentroAcopiochemaSchema)
 from app.controller.centrosacopio import (fetch_all_centros_acopio, fetch_centro_acopio_by_id, create_centro_acopio, update_centro_acopio)
 from app.common.utils import transform_mongo_document
 from app.schema.base import build_response
@@ -45,7 +45,7 @@ async def new_centro_acopio(centro: CreateCentroAcopiochemaSchema = Body(...)):
         centro_dict = centro.model_dump()
         _id = await create_centro_acopio(centro_dict)
         if _id:
-            centro_dict["_id"] = _id
+            centro_dict["id"] = _id
 
         centro_schema = CentroAcopiochema(**transform_mongo_document(centro_dict))
         return build_response(success=True, data=centro_schema, status_code=200)
@@ -62,7 +62,7 @@ async def update_centro_acopio(centro: CentroAcopiochema = Body(...)):
         updated = await update_centro_acopio(centro_dict)
         if not updated:
             return build_response(success=False,
-                                  error=f"Centro {centro_dict['id_centro']} was not updated",
+                                  error=f"Centro {centro_dict['id']} was not updated",
                                   status_code=403)
 
         centro_schema = CentroAcopiochema(**centro_dict)

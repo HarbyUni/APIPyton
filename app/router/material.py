@@ -23,12 +23,12 @@ async def fetch_materiales():
         logger.exception("fetch_materiales")
         return build_response(success=False, error="An error occurred while fetching materials", status_code=500)
 
-@router.get(path="/{material_id}",
+@router.get(path="/{id}",
             description="Get a material by id",
             response_model=MaterialResponse)
-async def get_material(material_id: str):
+async def get_material(id: str):
     try:
-        material = await fetch_material_by_id(material_id)
+        material = await fetch_material_by_id(id)
         if not material:
             return build_response(success=False, error="No records found", status_code=404)
         material_schema = MaterialSchema(**transform_mongo_document(material))
@@ -45,7 +45,7 @@ async def new_material(material: CreateMaterialSchema = Body(...)):
         material_dict = material.model_dump()
         _id = await create_material(material_dict)
         if _id:
-            material_dict["_id"] = _id
+            material_dict["id"] = _id
 
         material_schema = MaterialSchema(**transform_mongo_document(material_dict))
         return build_response(success=True, data=material_schema, status_code=200)
@@ -56,17 +56,19 @@ async def new_material(material: CreateMaterialSchema = Body(...)):
 @router.put(path="/update",
             description="Update a material",
             response_model=MaterialResponse)
-async def update_material(material: MaterialSchema = Body(...)):
+async def update_material(material: dict = Body(...)):
     try:
-        material_dict = material.model_dump()
-        updated = await update_material(material_dict)
+        # material ya es un diccionario, por lo que no es necesario convertirlo
+        updated = await update_material(material)
         if not updated:
             return build_response(success=False,
-                                  error=f"Material {material_dict['id_material']} was not updated",
+                                  error=f"Material {material['id']} was not updated",
                                   status_code=403)
 
-        material_schema = MaterialSchema(**material_dict)
-        return build_response(success=True, data=material_schema, status_code=200)
+        # Devolvemos el material actualizado
+        return build_response(success=True, data=material, status_code=200)
     except Exception as e:
         logger.exception("update_material")
         return build_response(success=False, error="An error occurred while updating the material", status_code=500)
+
+
