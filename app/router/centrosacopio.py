@@ -16,12 +16,14 @@ router = APIRouter(
 async def fetch_centros_acopio():
     try:
         centros = await fetch_all_centros_acopio()
+        logger.debug(f"Centros fetched from DB: {centros}")
         centro_schemas = [CentroAcopiochema(**transform_mongo_document(centro)) for centro in centros]
-        fetch_centros_schema = FetchCentroAcopiochemaSchema(Material=centro_schemas, total=len(centro_schemas))
+        fetch_centros_schema = FetchCentroAcopiochemaSchema(centros=centro_schemas, total=len(centro_schemas))
         return build_response(success=True, data=fetch_centros_schema, status_code=200)
     except Exception as e:
         logger.exception("fetch_centros_acopio")
         return build_response(success=False, error="An error occurred while fetching centros de acopio", status_code=500)
+
 
 @router.get(path="/{centro_id}",
             description="Get a centro de acopio by id",

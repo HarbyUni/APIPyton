@@ -6,6 +6,7 @@ from app.router.material import router as material
 from app.router.recompensas import router as recompensas
 from app.router.registroreciclaje import router as registroreciclaje
 from app.router.centrosacopio import router as centro_acopio
+from app.router.solicitudesrecoleccion import router as solicitud_recoleccion
 
 api_router = APIRouter(
     prefix="/api",
@@ -35,3 +36,4 @@ api_router.include_router(material)
 api_router.include_router(recompensas)
 api_router.include_router(registroreciclaje)
 api_router.include_router(centro_acopio)
+api_router.include_router(solicitud_recoleccion)

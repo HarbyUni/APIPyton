@@ -17,7 +17,7 @@ async def fetch_registros_reciclaje():
     try:
         registros = await fetch_all_registros_reciclaje()
         registro_schemas = [RegistroReciclajeSchema(**transform_mongo_document(registro)) for registro in registros]
-        fetch_registros_schema = FetchRegistroReciclajeSchema(Registros=registro_schemas, total=len(registro_schemas))
+        fetch_registros_schema = RegistroReciclajeSchema(Registros=registro_schemas, total=len(registro_schemas))
         return build_response(success=True, data=fetch_registros_schema, status_code=200)
     except Exception as e:
         logger.exception("fetch_registros_reciclaje")
